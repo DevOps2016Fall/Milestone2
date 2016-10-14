@@ -1,0 +1,15 @@
+---
+- hosts: node0
+  roles:
+      - { role: geerlingguy.jenkins }
+  tasks:
+  - name: Install git
+    apt: name=git state=latest
+
+  - name: install maven (and other packages if needed)
+    become: yes
+    apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
+    with_items:
+      - maven
+
+

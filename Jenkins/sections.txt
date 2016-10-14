@@ -1,0 +1,7 @@
+1. Automatically Provision build Server
+2. Install Jenkins, Git, Maven and JDK by ansible
+3. Create jobs: two jobs "Success" and "Fail", which corresponds to two branches
+4. Test Success job
+5. Test Fail job
+6. Check email
+
