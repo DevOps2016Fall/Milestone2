@@ -1,6 +1,6 @@
 # Build
 
-## Automatically Provision Build Server
+## Automatically Provision Build Server(This is the same as Milestone1)
 
 In this section, we will automatically provision a build server on DigitalOcean by using the techniques learned from preivious workshops and homeworks. Prerequisites
 
@@ -10,75 +10,42 @@ In this section, we will automatically provision a build server on DigitalOcean 
 
 
 ### Steps
-* By running ```node provision.js```, we get a build server on DigitalOcean for Jenkins. Store the IP auch as ```192.241.147.5``` into an ansible ```inventory``` file
-* Install ```Ansible role```[Jenkins CI](https://galaxy.ansible.com/detail#/role/440) by 
+* By running ```node provision.js```, we get a build server on DigitalOcean for Jenkins. Store the IP auch as ```198.199.74.247``` into an ansible ```inventory``` file
 
+* Install Jenkins, git and all python dependencies on the build server by ```ansible-playbook -i inventory Jenkins.yml``` The following packages will be installed
+ 
  ```
- ansible-galaxy install geerlingguy.Jenkins 
+ ---
+system_packages:
+  - build-essential
+  - git
+  - python-dev
+  - python-setuptools
+  - maven
+python_packages:
+  - pip
+python_pip_packages:
+  - mock
+  - nose
+  - coverage
+  - pylint
+ 
  ```
-* Write a playbook, which will install Jenkins, git and maven on the server
 
- ```
----
-- hosts: node0
-  roles:
-      - { role: geerlingguy.Jenkins }
-  tasks:
-  - name: Install git
-    apt: name=git state=latest
-
-  - name: install maven (and other packages if needed)
-    become: yes
-    apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
-    with_items:
-      - maven
-``` 
-* Install Jenkins by ```ansible-playbook -i inventory Jenkins.yml```
-
-* Now Jenkins is automatically installed on the build server, visit ```192.241.147.5:8080```
+* Now Jenkins is automatically installed on the build server, visit ```198.199.74.247:8080```
 ![](img/login.png)
 * Tools that used during build, like Git and Maven, are also installed automatically.
 
-## Github Configurations
-Since we want the project to be build everytime a new push commited to the repo, we need to have webhook to automatically trigger build jobs. In Github, we can easily configure this by the following steps.
-
-### Steps
-
-* Go to the [DevOps2016Fall/Milestone1_test](https://github.com/DevOps2016Fall/Milestone1_test) repo GitHub __Settings__
-* __Integrations & Service__:__Add Service__
-* select__Jenkins (GitHub plugin)__ 
-* Enter Jenkins Hook URL as  
+* Go to the [DevOps2016Fall/Milestone2_test](https://github.com/DevOps2016Fall/Milestone2_test) repo GitHub __Settings__ and enter Jenkins Hook URL as  
 
  ```
- http://192.241.147.5:8080/github-webhook/
+ http://198.199.74.247:8080/github-webhook/
  ```
- ![](img/github.png)
- 
-## DigitalOcean Email Server
-When the build is failed, we have to send emails to notify the developer. In this project, we setup a send-only email server on DigitalOcean according to this [link](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-postfix-as-a-send-only-smtp-server-on-ubuntu-14-04)
-
-### Steps
-
-* ```sudo apt-get install mailutils```
-* Select __Internet Site__ option, Press ENTER to install
-* Configure Postfix: Change the line that reads inet_interfaces = all to inet_interfaces = loopback-only
-* sudo service postfix restart
-* Test: 
-
-	```
-echo "This is the body of the email" | mail -s "This is the subject line" user@example.com
-```
-
-## Jenkins
-
-After the build server is automatically provisioned, we can login the Jenkins homepage by visiting```192.241.147.5:8080``` and using ``Jenkins`admin``` for both user name and passwords. Before we run our build jobs, we have to configure Jenkins by the following steps.
-
-### Steps
-
 * Install plugins on Jenkins:
   - github
-  - mailer
-  - other recommended plugins
+  - Junit: display nose test reports
+  - Cobertura: display python code coverage
+  - Violations：display python code format, like 
 * Configurations:
   - pass(since git and maven are installed automatically by ansible)
 * Create two Jobs

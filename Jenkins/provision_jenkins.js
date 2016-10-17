@@ -3,7 +3,7 @@ var os   = require("os");
 var fs = require("fs");
 
 var config = {};
-config.token = "";// my own token
+config.token = "a40b9e915e57df76e39a1eab52a4495e327f445d7d52a00c6e9a059ca0574466";// my own token
 
 var headers =
 {
@@ -68,7 +68,7 @@ var client =
 // Comment out when completed. ONLY RUN ONCE!!!!!
 // Write down/copy droplet id.
 var name = "UnityId-"+os.hostname();
-var region = "nyc1"; // Fill one in from #1
+var region = "nyc2"; // Fill one in from #1
 var image = "ubuntu-12-04-x64"; // Fill one in from #2
 var sshID = 3374967; // get it by retrieve
 var dropletId = null;

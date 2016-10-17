@@ -1,15 +1,21 @@
 ---
 - hosts: node0
+  vars_files:
+    - var.yml
+  become: yes
   roles:
       - { role: geerlingguy.jenkins }
   tasks:
-  - name: Install git
-    apt: name=git state=latest
-
-  - name: install maven (and other packages if needed)
+  - name: Install required system packages.
     become: yes
-    apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
-    with_items:
-      - maven
+    apt: pkg={{ item }} state=installed update-cache=yes
+    with_items: "{{ system_packages }}"
+  - name: Install required pip packages.
+    easy_install: name={{ item }}
+    with_items: "{{ python_packages }}"
+  - name: Install required Python packages.
+    pip: name={{ item }}
+    with_items: "{{ python_pip_packages }}"
+
 
 

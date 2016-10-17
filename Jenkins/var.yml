@@ -1,0 +1,27 @@
+---
+system_packages:
+  - build-essential
+  - git
+  - python-dev
+  - python-setuptools
+  - maven
+python_packages:
+  - pip
+python_pip_packages:
+  - mock
+  - nose
+  - coverage
+  - pylint
+  - flask
+  - decorator
+  - decorator
+  - Flask
+  - gevent
+  - greenlet
+  - gunicorn
+  - itsdangerous
+  - Jinja2
+  - MarkupSafe
+  - six
+  - Werkzeug
+  - pytest
