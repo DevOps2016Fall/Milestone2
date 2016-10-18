@@ -25,3 +25,4 @@ python_pip_packages:
   - six
   - Werkzeug
   - pytest
+  - tabulate
