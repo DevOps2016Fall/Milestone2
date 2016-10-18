@@ -1,92 +1,43 @@
-# Build
+# Test + Analysis
 
-## Automatically Provision Build Server(This is the same as Milestone1)
+## Set Up
 
-In this section, we will automatically provision a build server on DigitalOcean by using the techniques learned from preivious workshops and homeworks. Prerequisites
+* Using the tools we got from last milestone, we can easily provision a build server with Jenkins and DigitalOcean
+* run ```node provision_jenkins.js``` to create a droplet
+* run ```ansible-playbook -i inventory jenkins.yml``` to install ```jenkins``` and all the dependencies
+* The open source project that we selected to test is [httpbin](https://github.com/DevOps2016Fall/httpbin), which is a python package.
 
-```
- Git, Node, ansible, DigitalOcean account
-```
+## Test Suites
+We use the following packages and plugins to implement unit tests and display results
 
+* nose: unitest for python code.
+* coverage: compute coverage for python code.
+* pylint: statical code analysis for python code.
+* Junit Plugin: display the unit test results generated from nose.
+* Cobertura Plugin: display the coverage analysis from coverage.
+* Violations Plugin: display the statical analysis results from pylint.
 
-### Steps
-* By running ```node provision.js```, we get a build server on DigitalOcean for Jenkins. Store the IP auch as ```198.199.74.247``` into an ansible ```inventory``` file
+![unit](img/unittest.png) 
 
-* Install Jenkins, git and all python dependencies on the build server by ```ansible-playbook -i inventory Jenkins.yml``` The following packages will be installed
- 
- ```
- ---
-system_packages:
-  - build-essential
-  - git
-  - python-dev
-  - python-setuptools
-  - maven
-python_packages:
-  - pip
-python_pip_packages:
-  - mock
-  - nose
-  - coverage
-  - pylint
- 
- ```
+## Advanced Testing:test case generation
+Based on the project [httpbin](https://github.com/DevOps2016Fall/httpbin) test cases, we implement a test case generator using ast module in python, which will read the source code ```core.py``` and generate a test case based on default parameters of each function. We can see that our converage is improved from 70% to 77%.
+![unit](img/unnitest2.png) 
 
-* Now Jenkins is automatically installed on the build server, visit ```198.199.74.247:8080```
-![](img/login.png)
-* Tools that used during build, like Git and Maven, are also installed automatically.
+## Basic Analysis 
+We used ```pylint``` which is a statical analysis tool for python language. we get the following results.
+![](img/pylint.png)
 
-* Go to the [DevOps2016Fall/Milestone2_test](https://github.com/DevOps2016Fall/Milestone2_test) repo GitHub __Settings__ and enter Jenkins Hook URL as  
+## Custom Metrics: 
+![](img/metric.png)
 
- ```
- http://198.199.74.247:8080/github-webhook/
- ```
-* Install plugins on Jenkins:
-  - github
-  - Junit: display nose test reports
-  - Cobertura: display python code coverage
-  - Violations：display python code format, like 
-* Configurations:
-  - pass(since git and maven are installed automatically by ansible)
-* Create two Jobs
-  - Go to Jenkins homepage, select __New Item__ --> enter __Success__ as the job name--> __Freestyle project__
-  - __General__ --> enter Project name __https://github.com/DevOps2016Fall/Milestone1_test__
-  - Select __Git__ -->enter Repo URL
-  * __Branch Specifier__--> enter one branche name: __*/master__ (There are two branches, master and fail, created previously on github test repo)
-  * __Build Triggers__ --> select __Build when a change is pushed to GitHub__
-  * __Build__--> select__Invoke top-level Maven targets__ and enter__clean isntall__ in the Goals
-  * __Post-build Actions__ --> select __E-mail Notification__ and enter __***@ncsu.edu__ as the recipients and check __Send e-mail for every unstable build__(every failed build will triger sending email)
-  * Repeat the whole process to create another job called __Failure__ which will be trigerred when __*/Fail__ branch is commited.
-  
-  ![](img/create_job.png)
-
-## Testing
-* Run ```node jenkins.js``` to automatically provision a server on DigitalOcean.
-* Run ```ansible-playbook -i inventory Jenkins.yml ``` to install jenkins, java-jdk, git and maven on the server.
-* Clone [Test repo](https://github.com/DevOps2016Fall/Milestone1_test/).
-* Checkout to master/Fail branch.
-* Make changes to the java file.
-* Commit and push this change to the github.
-* Go to Jenkins to track this build job by checking console output.
-* If commits to master branch, the Success build job will run. This build will be successful(by design), then you can see somthing like
-
-	```
-16:32:50 [INFO] BUILD SUCCESS
-16:32:50 [INFO] ------------------------------------------------------------------------
-16:32:50 [INFO] Total time: 9.984s
-16:32:50 [INFO] Finished at: Mon Sep 26 16:32:50 UTC 2016
-16:32:50 [INFO] Final Memory: 13M/32M
-16:32:50 [INFO] ------------------------------------------------------------------------
-16:32:50 Finished: SUCCESS
-```
-* If commits to Fail branch, the Fail build job will run and a notification email will be sending since this build fails. It can be found in your inbox (probaly in junk box)
-* You can also browser previous builds logs in the build history section.
-![](img/email.png)
+## Gates:
+* [Demo: accept and reject a commit]()
 
 
-## Demo
-* [Demo1](https://youtu.be/eXOqyXVl7wY): Build Server Testing
-* [Demo2](https://youtu.be/dvgAMV8Sfmg): Automatically Provision Build Server + Build Server Testing
+
+
+
+
 
 
   
