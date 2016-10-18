@@ -24,7 +24,7 @@ We use the following packages and plugins to implement unit tests and display re
 
 ## Advanced Testing:test case generation [__Youtube Demo2__](https://youtu.be/V5HjZjyE45A)
 
-Based on the project [httpbin](https://github.com/DevOps2016Fall/httpbin) test cases, we implement a test case generator using ast module in python, which will read the source code ```core.py``` and generate a test case based on default parameters of each function. We can see that our converage is improved from 70% to 77%.
+Based on the project [httpbin](https://github.com/DevOps2016Fall/httpbin) test cases, we implement a test case generator using ast module in python called[test_generator.py](https://github.com/DevOps2016Fall/Milestone2/blob/master/Jenkins/test_generator.py), which will read the source code ```core.py``` and generate a test case based on default parameters of each function. We can see that our converage is improved from 70% to 77%.
 ![unit](img/unnitest2.png) 
 
 ## Basic Analysis [__Youtube Demo3__](https://youtu.be/2j1D0FH_RfU)
@@ -32,6 +32,7 @@ We used ```pylint``` which is a statical analysis tool for python language. we g
 ![](img/pylint.png)
 
 ## Custom Metrics: [__Youtube Demo4__](https://youtu.be/9i5lgEcYZdE)
+We write a python [script](https://github.com/DevOps2016Fall/Milestone2/blob/master/Jenkins/metrics.py) to compute the max_condition, long_method, and the code ratio three different meetrics. 
 
 ![](img/metric.png)
 
