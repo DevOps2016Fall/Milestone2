@@ -37,6 +37,8 @@ We used ```pylint``` which is a statical analysis tool for python language. we g
 
 ## Gates:[__Youtube Demo5__](https://youtu.be/4GqE5WcCfBQ)
 
+We have a [post_script](https://github.com/DevOps2016Fall/Milestone2/blob/master/Jenkins/gate.sh) to check whether the code coverage is greater than 70% and the convention violation counts are less than 200. If so, then accept this commit and push the new code to a branch tagged ```test```. Otherwise reject the commit and don't push the new code.
+
 ### accept a commit and push to test tag
 
 ```
