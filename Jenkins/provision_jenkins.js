@@ -30,7 +30,7 @@ var client =
 		{
 			"name": dropletName,
 			"region":region,
-			"size":"512mb",
+			"size":"1gb",
 			"image":imageName,
 			// Id to ssh_key already associated with account.
 			"ssh_keys":[sshID],
